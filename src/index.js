@@ -1,14 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+
+import App from './App';
+
+import { UserProvider } from './contexts/user.context';
+import { CategoriesProvider } from './contexts/catergories.context';
+
+import './index.scss';
+import {CartProvider} from './contexts/cart.context';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <BrowserRouter>
+      <UserProvider>
+        <CategoriesProvider>
+          <CartProvider>
+            <App />  
+          </CartProvider>
+        </CategoriesProvider>
+      </UserProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
