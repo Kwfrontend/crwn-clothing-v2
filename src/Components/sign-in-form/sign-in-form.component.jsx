@@ -1,16 +1,15 @@
 import { useState } from "react";
 
+import { useDispatch } from "react-redux";
+
 
 import FormInput from "../form-input/form-input.component";
 import Button, {BUTTON_TYPES_CLASSES} from "../button/button.component";
 
 
-import { signInWithGooglePopup,
-        createUserDocumentFromAuth,
-        SignInAuthUserWithEmailAndPassword
-        } from "../../utils/firebase/firebase.utils";
 
 import {SignUpContainer,ButtonsContainer} from './sign-in-form.styles.jsx';
+import { emailSignInStart, googleSignInStart } from "../../store/user/user.action";
  
 
 const defaultFormFields = {
@@ -21,38 +20,27 @@ const defaultFormFields = {
 const SignInForm = ()  => { 
 
      const [formFields, setFormFields] = useState (defaultFormFields);
-     const {email, password} = formFields;  
+     const {email, password} = formFields;
+     const dispatch = useDispatch();  
 
      const resetFormFields = () => {
         setFormFields(defaultFormFields);
      }
 
-     const signInWithGoogle  = async () => {
-         await signInWithGooglePopup(); 
+     const signInWithGoogle  = () => {
+         dispatch (googleSignInStart());
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit =  (event) => {
         event.preventDefault ();  
 
         try { 
-            const {user} = await SignInAuthUserWithEmailAndPassword(email,password
-            );   
-            resetFormFields ();
+            dispatch (emailSignInStart(email,password));
+            resetFormFields();
 
-        }catch (error) {
-            switch(error.code){
-            case ('auth/wrong-password'):
-                alert ( 'Wrong password or email')
-                break;
-            case ('auth/user-not-found'):
-                alert ('No account with this email')
-                break;
-            default:
-                console.log (error);
-
-            }
+        } catch (error) {
+            console.log (error);
         }
-        
     }
      const handleChange = (event) => {
         const {name, value} = event.target;
