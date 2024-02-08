@@ -9,7 +9,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { stripePromise } from './utils/stripe/stripe.utils';
 
 import App from './App';
-import { store, persistor } from './store/store';
+import { store, persistor } from "./store/store.ts";
 
 import './index.scss';
 
